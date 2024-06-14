@@ -56,7 +56,7 @@ My project, the ball tracking robot, uses a combination of a Raspberry Pi, an ul
 - What your plan is to complete your project --->
 
 
-# Schematics 
+<!--- # Schematics --->
 <!--- Here's where you'll put images of your schematics. [Tinkercad](https://www.tinkercad.com/blog/official-guide-to-tinkercad-circuits) and [Fritzing](https://fritzing.org/learning/) are both great resoruces to create professional schematic diagrams, though BSE recommends Tinkercad becuase it can be done easily and for free in the browser. --->
 
 <!--- # Code --->
@@ -94,7 +94,7 @@ Don't forget to place the link of where to buy each component inside the quotati
 
 To watch the BSE tutorial on how to create a portfolio, click here. --->
 
-# Starter Project
+# Starter Project: RGB Sliders
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/Xfu9-YYEO8g?si=NT8ErERu6xz7UEhm" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
