@@ -43,11 +43,31 @@ My project, the ball tracking robot, uses a combination of a Raspberry Pi, an ul
 - Previous challenges you faced that you overcame
 - What needs to be completed before your final milestone --->
 
-<!--- # First Milestone --->
+# First Milestone
 
-<!--- **Don't forget to replace the text below with the embedding for your milestone video. Go to Youtube, click Share -> Embed, and copy and paste the code to replace what's below.** --->
+<iframe width="560" height="315" src="https://www.youtube.com/embed/dIZvc5pAWbs?si=-mbjczFO7UeUTKnD" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
-<!--- v<iframe width="560" height="315" src="https://www.youtube.com/embed/CaCazFBhYKs" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe> --->
+My first milestone involved constructing the base of the robot, setting up the raspberry pi to work with ssh and the app VNC Viewer on my laptop for remote control, attaching the motors to the motor driver and raspberry pi, and running basic code in Python to ensure the functionality of the components. 
+
+The base of the robot is made up of several components: two DC motors, a plastic base plate with holes for screws to attach parts, a 6 volt battery pack, two wheels to screw onto the chassis of the motors, a switch, and one more wheel that attaches to one end of the robot, and can rotate back and forth depending on the motion of the robot, providing stability. Screws hold these parts in place on the baseplate. Remaining space on the baseplate allows for additional components, such as a motor driver and raspberry pi, to be attached. 
+
+Power goes from the battery pack to the h-bridge motor driver (which serves as a terminal to toggle and redirect power) through the "5V" input slot -- the motor driver requires at least 5 volts to power its own processor to redirect power. Output slots are used to connect the motors to the h-bridge. The h-bridge also has input pins, which can recieve instructions from another device such as a raspberry pi to toggle power to certain output slots. The raspberry pi has GPIO (general purpose input-output) pins on it, which can recieve and output instructions to and from another device. The pins of the two devices are connected via jumper wires, allowing for code on the raspberry pi to control the motor driver. 
+
+The motor driver has 6 input pins: ENA, ENB, IN1, IN2, IN3, and IN4. ENA and ENB stand for Enable Motor A and B, meaning they provide instructions for whether or not the motors should be turned on from the raspberry pi. These pins must be digital pins capable of outputting code instructions in the form of PWM (pulse width modulation) instructions, which tell the h-bridge what the duty cycle (or fraction of a certain period of time) the power should be turned on in a form the h-bridge can understand. The IN (input) pins provide a way for the raspberry pi to give instructions on the speed and direction of the motor, and are connected to additional GPIO pins. The circuit is completed by connecting the ground of the raspberry pi to the ground of the h-bridge and battery pack. 
+
+I faced challenges with implementing the switch; I couldn't solder it to my wires effectively, so I decided to leave it out and instead, for now, just disconnected the power to turn off the robot. The electrical engineering aspect of this milestone was also completely new to me, so I struggled with this; however, I was able to push through by learning what I needed to online. The raspberry pi also kept bugging out and not working with ssh and VNC Viewer, making me have to attach the raspberry pi to a monitor, mouse, and keyboard to use it. So far, I haven't been able to find the cause of this problem. 
+
+This milestone took almost half of my time at Bluestamp to complete, so I need to go quickly for the other milestones and modifications. The other milestones are mostly code, which I have some experience in, so they should go quicker. 
+
+Here's my code for testing the motors: 
+
+```python
+
+
+
+```
+
+
 
 <!--- For your first milestone, describe what your project is and how you plan to build it. You can include:
 - An explanation about the different components of your project and how they will all integrate together
