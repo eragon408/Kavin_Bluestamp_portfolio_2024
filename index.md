@@ -55,6 +55,8 @@ Power goes from the battery pack to the h-bridge motor driver (which serves as a
 
 The motor driver has 6 input pins: ENA, ENB, IN1, IN2, IN3, and IN4. ENA and ENB stand for Enable Motor A and B, meaning they provide instructions for whether or not the motors should be turned on from the raspberry pi. These pins must be digital pins capable of outputting code instructions in the form of PWM (pulse width modulation) instructions, which tell the h-bridge what the duty cycle (or fraction of a certain period of time) the power should be turned on in a form the h-bridge can understand. The IN (input) pins provide a way for the raspberry pi to give instructions on the speed and direction of the motor, and are connected to additional GPIO pins. The circuit is completed by connecting the ground of the raspberry pi to the ground of the h-bridge and battery pack. 
 
+![Headstone Image](Kavin.jpg)
+
 I faced challenges with implementing the switch; I couldn't solder it to my wires effectively, so I decided to leave it out and instead, for now, just disconnected the power to turn off the robot. The electrical engineering aspect of this milestone was also completely new to me, so I struggled with this; however, I was able to push through by learning what I needed to online. The raspberry pi also kept bugging out and not working with ssh and VNC Viewer, making me have to attach the raspberry pi to a monitor, mouse, and keyboard to use it. So far, I haven't been able to find the cause of this problem. 
 
 This milestone took almost half of my time at Bluestamp to complete, so I need to go quickly for the other milestones and modifications. The other milestones are mostly code, which I have some experience in, so they should go quicker. 
