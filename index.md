@@ -148,9 +148,24 @@ Don't forget to place the link of where to buy each component inside the quotati
 - [Example 2](https://sviatil0.github.io/Sviatoslav_BSE/)
 - [Example 3](https://arneshkumar.github.io/arneshbluestamp/) 
 
-Resources:
-https://learn.adafruit.com/python-virtual-environment-usage-on-raspberry-pi/basic-venv-usage
 
+# Tutorial: Setting up the Raspberry Pi
+
+This guide will walk through the steps to set up your Raspberry Pi in terms of software, assembling the robot, and coding the robot. 
+
+## 1. Imaging the SD Card
+
+To flash the microSD card, you'll need to insert the card into your computer either via an adapter or directly, depending on the computer. Download the <a href="https://www.canakit.com/raspberry-pi-4-starter-kit.html"> Raspberry Pi Imager </a>. 
+
+Within the imager, select the Raspberry Pi 4 Model B as your computer, the OS as the top selection (most likely 64-bit Debian Bookworm Raspberry Pi OS) and 
+
+
+## 2.
+
+# Resources:
+https://learn.adafruit.com/python-virtual-environment-usage-on-raspberry-pi/basic-venv-usage
+https://docs.opencv.org/3.4/d6/d00/tutorial_py_root.html
+https://www.engineersgarage.com/opencv4-5-raspberry-pi-image-video-access-recording/
 
 To watch the BSE tutorial on how to create a portfolio, click here. --->
 
