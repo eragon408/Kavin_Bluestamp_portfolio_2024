@@ -29,15 +29,21 @@ My project, the ball tracking robot, uses a combination of a Raspberry Pi, an ul
 - A summary of key topics you learned about
 - What you hope to learn in the future after everything you've learned at BSE --->
 
+<!--- # Second Milestone
 
+**Don't forget to replace the text below with the embedding for your milestone video. Go to Youtube, click Share -> Embed, and copy and paste the code to replace what's below.** 
 
-<!--- # Second Milestone --->
+<iframe width="560" height="315" src="https://www.youtube.com/embed/y3VAmNlER5Y" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
 
-<!--- **Don't forget to replace the text below with the embedding for your milestone video. Go to Youtube, click Share -> Embed, and copy and paste the code to replace what's below.** --->
+For my second milestone, I had to attach a camera to my raspberry pi and use it to set up a ball tracking algorithm. This required: 
+1. Mounting the camera on the robot, 
+2. Connecting it to the raspberry pi, 
+3. Installing several libraries for the camera,
+4. And writing an algorithm that would detect the ball by color and size, and turn and move towards it when sighted. 
 
-<!--- <iframe width="560" height="315" src="https://www.youtube.com/embed/y3VAmNlER5Y" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe> --->
+This milestone, although being almost entirely software-based, came with many setbacks. My Raspberry Pi's micro-SD card was corrupted twice after its power randomly switched back off and on, requiring me to set up the Raspberry Pi multiple times, consuming a lot of my time. The Raspberry Pi's ssh and VNC kept breaking, making me switch to using OBS with a video capture card, HDMI cable, mouse, and keyboard. In addition, I had trouble finding what I needed in the documentation for both OpenCV and picamera2 (2 libraries I used) due to inexperience with this and coding in general. 
 
-<!--- For your second milestone, explain what you've worked on since your previous milestone. You can highlight:
+For your second milestone, explain what you've worked on since your previous milestone. You can highlight:
 - Technical details of what you've accomplished and how they contribute to the final goal
 - What has been surprising about the project so far
 - Previous challenges you faced that you overcame
@@ -57,6 +63,8 @@ This involved:
 The base of the robot is made up of several components: two DC motors, a plastic base plate with holes for screws to attach parts, a 6 volt battery pack, two wheels to screw onto the chassis of the motors, a switch, and one more wheel that attaches to one end of the robot, and can rotate back and forth depending on the motion of the robot, providing stability. Screws hold these parts in place on the baseplate. Remaining space on the baseplate allows for additional components, such as a motor driver and Raspberry Pi, to be attached.
 
 ![Headstone Image](milestone-1-diagram.svg)
+
+**Figure 1: A schematic showing the state of my robot as of the first milestone**
 
 Power goes from the battery pack to the H-bridge motor driver (which serves as a terminal to toggle and redirect power) through the "5V" input slot. The motor driver requires at least 5 volts to power its own processor to redirect power. Output slots are used to connect the motors to the H-bridge. The H-bridge also has input pins, which can receive instructions from another device such as a Raspberry Pi to toggle power to certain output slots. The Raspberry Pi has GPIO (general purpose input-output) pins on it, which can receive and output instructions to and from another device. The pins of the two devices are connected via jumper wires, allowing for code on the Raspberry Pi to control the motor driver.
 
@@ -178,6 +186,8 @@ My starter project was the RGB Sliders, which I chose because I thought a custom
 Current flows from the micro-USB port to the sliders, which control the flow of current to capacitors. These capacitors control the amount of power the diodes recieve and so their brightness. For example, if the green slider were set to 0 and the red and blue sliders each set to max, the green diode would not light up, while both the red and blue ones would be at full brightness. The red and blue would appear to blend together to create the color purple. 
 
 ![Headstone Image](Starter-project-diagram-4.png)
+
+**Figure 2: A diagram showing the internal circuits of the RGB Sliders**
 
 I found this project mostly easy to put together, as I just had to solder the sliders and LED to the board. However, I encountered a problem with the green color slider where it did not work. At first, I thought this was a problem with the slider not being soldered properly to the board, and added more solder to the pins. Later, though, I realized that the LED was positioned incorrectly. I attempted to desolder it, but was mostly unsuccessful, so instead kept melting the solder and slightly adjusting the angle of the LED until it worked.
 
