@@ -29,7 +29,7 @@ My project, the ball tracking robot, uses a combination of a Raspberry Pi, an ul
 - A summary of key topics you learned about
 - What you hope to learn in the future after everything you've learned at BSE --->
 
-<!-- # Second Milestone
+<!--- # Second Milestone
 
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/y3VAmNlER5Y" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
@@ -37,25 +37,26 @@ For my second milestone, I had to attach a camera to my raspberry pi and use it 
 1. Mounting the camera on the robot, 
 2. Connecting it to the raspberry pi, 
 3. Installing several libraries for the camera,
-4. And writing an algorithm that would detect the ball by color and size, and turn and move towards it when sighted. 
+4. And writing an algorithm that would detect the ball by color and size, and turn and move towards it when sighted.
+
+
+I also added the switch to my circuit, which I had originally planned to do in milestone 1. This was helpful in making sure I didn't have to manually disconnect and reconnect my circuit to conserve battery. 
 
 A ribbon cable connnects the camera, which is glued onto the motor base, to the Raspberry Pi. The Raspberry Pi interfaces with the camera using the picamera2 library. It also uses the OpenCV computer vision library to erode and dilate the camera view in order to isolate the ball, then puts a mask over the camera view that extracts only the red color of the ball. 
 
-![Headstone Image]()
+| **Original** | **Eroded and Dilated** | **Masked** | 
+|:--:|:--:|:--:|
+| ![Image 1](original.png) | ![Image 2](blur.png) | ![Image 3](mask.png) |
+
+**Figure 1: Comparison of the different stages of processing that the camera view goes through**
 
 From this masked image, the x and y coordinates of the ball can be found. If the coordinates are near the center of the camera view, the robot moves forward. Otherwise, depending on if the ball is on the left or right, the robot will turn towards the ball until the ball is centered in the camera view, then move forward. If the ball suddenly disappears from the camera view, the robot will take the last seen x and y of the ball, and depending on where that is in the camera view, turn left or right, searching for the ball. The Raspberry Pi's GPIO pins are connected to the motors through a driver, and different functions are called to set these pins to high to turn on different motors.
 
 ![Headstone Image](bluestamp_milestone_2_flowchart.svg)
 
-**Figure 2: A flowchart showing my code's logic**
+**Figure 2: A flowchart showing my code's logic** 
 
-This milestone, being almost entirely software-based, came with many setbacks. My Raspberry Pi's micro-SD card was corrupted twice after its power randomly switched back off and on, requiring me to set up the Raspberry Pi multiple times, consuming a lot of my time. The Raspberry Pi's ssh and VNC also kept breaking, making me switch to using OBS with a video capture card, HDMI cable, mouse, and keyboard. In addition, I had trouble finding what I needed in the documentation for both OpenCV and picamera2 due to inexperience with this and coding in general. 
-
-For your second milestone, explain what you've worked on since your previous milestone. You can highlight:
-- Technical details of what you've accomplished and how they contribute to the final goal
-- What has been surprising about the project so far
-- Previous challenges you faced that you overcame
-- What needs to be completed before your final milestone --->
+This milestone, being almost entirely software-based, came with many setbacks. My Raspberry Pi's micro-SD card was corrupted twice after its power randomly switched back off and on, requiring me to set up the Raspberry Pi multiple times, consuming a lot of my time. The Raspberry Pi's ssh and VNC also kept breaking, making me switch to using OBS with a video capture card, HDMI cable, mouse, and keyboard. In addition, I had trouble finding what I needed in the documentation for both OpenCV and picamera2 due to inexperience with this and coding in general. I ran into a glitch near the end of completing this milestone where my code would run without errors, but the motors would not turn; this took several days to solve. --->
 
 # First Milestone
 
