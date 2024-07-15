@@ -29,21 +29,25 @@ My project, the ball tracking robot, uses a combination of a Raspberry Pi, an ul
 - A summary of key topics you learned about
 - What you hope to learn in the future after everything you've learned at BSE --->
 
-<!--- # Second Milestone
+<!-- # Second Milestone
 
-**Don't forget to replace the text below with the embedding for your milestone video. Go to Youtube, click Share -> Embed, and copy and paste the code to replace what's below.** 
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/y3VAmNlER5Y" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
-
 For my second milestone, I had to attach a camera to my raspberry pi and use it to set up a ball tracking algorithm. This required: 
 1. Mounting the camera on the robot, 
 2. Connecting it to the raspberry pi, 
 3. Installing several libraries for the camera,
 4. And writing an algorithm that would detect the ball by color and size, and turn and move towards it when sighted. 
 
-A ribbon cable connnects the camera, which is glued onto the motor base, to the Raspberry Pi. The Raspberry Pi interfaces with the camera using the picamera2 library. It also uses the OpenCV computer vision library to erode and dilate the camera view in order to isolate the ball, then puts a mask over the camera view that extracts only the red color of the ball. From this masked image, the x and y coordinates of the ball can be found. If the coordinates are near the center of the camera view, the robot moves forward. Otherwise, depending on if the ball is on the left or right, the robot will turn towards the ball until the ball is centered in the camera view, then move forward. If the ball suddenly disappears from the camera view, the robot will take the last seen x and y of the ball, and depending on where that is in the camera view, turn left or right, searching for the ball. The Raspberry Pi's GPIO pins are connected to the motors through a driver, and different functions are called to set these pins to high to turn on different motors. 
+A ribbon cable connnects the camera, which is glued onto the motor base, to the Raspberry Pi. The Raspberry Pi interfaces with the camera using the picamera2 library. It also uses the OpenCV computer vision library to erode and dilate the camera view in order to isolate the ball, then puts a mask over the camera view that extracts only the red color of the ball. 
 
+![Headstone Image]()
 
+From this masked image, the x and y coordinates of the ball can be found. If the coordinates are near the center of the camera view, the robot moves forward. Otherwise, depending on if the ball is on the left or right, the robot will turn towards the ball until the ball is centered in the camera view, then move forward. If the ball suddenly disappears from the camera view, the robot will take the last seen x and y of the ball, and depending on where that is in the camera view, turn left or right, searching for the ball. The Raspberry Pi's GPIO pins are connected to the motors through a driver, and different functions are called to set these pins to high to turn on different motors.
+
+![Headstone Image](bluestamp_milestone_2_flowchart.svg)
+
+**Figure 2: A flowchart showing my code's logic**
 
 This milestone, being almost entirely software-based, came with many setbacks. My Raspberry Pi's micro-SD card was corrupted twice after its power randomly switched back off and on, requiring me to set up the Raspberry Pi multiple times, consuming a lot of my time. The Raspberry Pi's ssh and VNC also kept breaking, making me switch to using OBS with a video capture card, HDMI cable, mouse, and keyboard. In addition, I had trouble finding what I needed in the documentation for both OpenCV and picamera2 due to inexperience with this and coding in general. 
 
@@ -68,7 +72,7 @@ The base of the robot is made up of several components: two DC motors, a plastic
 
 ![Headstone Image](milestone-1-diagram.svg)
 
-**Figure 1: A schematic showing the state of my robot as of the first milestone**
+**Figure 2: A schematic showing the state of my robot as of the first milestone**
 
 Power goes from the battery pack to the H-bridge motor driver (which serves as a terminal to toggle and redirect power) through the "5V" input slot. The motor driver requires at least 5 volts to power its own processor to redirect power. Output slots are used to connect the motors to the H-bridge. The H-bridge also has input pins, which can receive instructions from another device such as a Raspberry Pi to toggle power to certain output slots. The Raspberry Pi has GPIO (general purpose input-output) pins on it, which can receive and output instructions to and from another device. The pins of the two devices are connected via jumper wires, allowing for code on the Raspberry Pi to control the motor driver.
 
@@ -191,7 +195,7 @@ Current flows from the micro-USB port to the sliders, which control the flow of 
 
 ![Headstone Image](Starter-project-diagram-4.png)
 
-**Figure 2: A diagram showing the internal circuits of the RGB Sliders**
+**Figure 3: A diagram showing the internal circuits of the RGB Sliders**
 
 I found this project mostly easy to put together, as I just had to solder the sliders and LED to the board. However, I encountered a problem with the green color slider where it did not work. At first, I thought this was a problem with the slider not being soldered properly to the board, and added more solder to the pins. Later, though, I realized that the LED was positioned incorrectly. I attempted to desolder it, but was mostly unsuccessful, so instead kept melting the solder and slightly adjusting the angle of the LED until it worked.
 
