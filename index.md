@@ -14,7 +14,7 @@ My project, the ball tracking robot, uses a combination of a Raspberry Pi, an ul
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/QO7vKPxlNC4?si=Abst_qLvoBDKtjux" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
-For my third and final milestone, I had to put ultrasonic sensors on my robot to detect obstacles and move around them. I didn't get this milestone done, as I only had three days to do so, but I still managed to finish the wiring and write motor testing code. 
+For my third and final milestone, I had to put ultrasonic sensors on my robot to detect obstacles and move around them. I didn't get this milestone done, as I only had three days to do so, but I still managed to finish the wiring and write sensor testing code. 
 
 The ultrasonic sensors, in order to detect obstacles, output a wave of sound at a frequency inaudible to humans. At the same time, my code gets the current time in seconds. When the sound wave bounces off a surface and is recieved back by the ultrasonic sensor, the sensor will output a signal to the Raspberry Pi, which will record the current time again. The time when the wave was cast is subtracted from the time the wave came back to the sensor, then multiplied by the speed of sound (34300 cm/s) to find the distance from the sensor (which is on the robot) to the obstacle (distance = speed * time.) 
 
@@ -26,7 +26,7 @@ The sensor has 4 pins:
 
 I used a breadboard to organize my wiring. I also needed it because the ultrasonic sensor's echo pin outputs 5 volts, which would fry the Raspberry Pi if outputted directly to it. I had to create voltage dividers on the breadboard to reduce the voltage to 3.3V, which the Raspberry Pi can handle, and then add another wire back to the GPIO pins of the Raspberry Pi. 
 
-
+![Headstone Image](ultrasonic_schematic.svg)
 
 I faced a few challenges during this milestone. For one, my ultrasonic sensors would randomly stop and start working without explanation. I also had trouble understanding the concept of voltage dividers. However, I'm still happy I managed to do all of this in three days.
 
