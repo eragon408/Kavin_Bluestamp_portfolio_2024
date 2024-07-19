@@ -27,6 +27,7 @@ The sensor has 4 pins:
 I used a breadboard to organize my wiring. I also needed it because the ultrasonic sensor's echo pin outputs 5 volts, which would fry the Raspberry Pi if outputted directly to it. I had to create voltage dividers on the breadboard to reduce the voltage to 3.3V, which the Raspberry Pi can handle, and then add another wire back to the GPIO pins of the Raspberry Pi. 
 
 ![Headstone Image](ultrasonic_schematic.svg)
+**Figure 1: A schematic showing the wiring of the ultrasonic sensors and voltage dividers**
 
 I faced a few challenges during this milestone. For one, my ultrasonic sensors would randomly stop and start working without explanation. I also had trouble understanding the concept of voltage dividers. However, I'm still happy I managed to do all of this in three days.
 
@@ -139,13 +140,13 @@ A ribbon cable connnects the camera, which is glued onto the motor base, to the 
 |:--:|:--:|:--:|
 | ![Image 1](original.png) | ![Image 2](blur.png) | ![Image 3](mask.png) |
 
-**Figure 1: Comparison of the different stages of processing that the camera view goes through**
+**Figure 2: Comparison of the different stages of processing that the camera view goes through**
 
 From this masked image, the x and y coordinates of the ball can be found. If the coordinates are near the center of the camera view, the robot moves forward. Otherwise, depending on if the ball is on the left or right, the robot will turn towards the ball until the ball is centered in the camera view, then move forward. If the ball suddenly disappears from the camera view, the robot will take the last seen x and y of the ball, and depending on where that is in the camera view, turn left or right, searching for the ball. The Raspberry Pi's GPIO pins are connected to the motors through a driver, and different functions are called to set these pins to high to turn on different motors.
 
 ![Headstone Image](bluestamp_milestone_2_flowchart.svg)
 
-**Figure 2: A flowchart showing my code's logic** 
+**Figure 3: A flowchart showing my code's logic** 
 
 This milestone, being almost entirely software-based, came with many setbacks. My Raspberry Pi's micro-SD card was corrupted twice after its power randomly switched back off and on, requiring me to set up the Raspberry Pi multiple times, consuming a lot of my time. The Raspberry Pi's ssh and VNC also kept breaking, making me switch to using OBS with a video capture card, HDMI cable, mouse, and keyboard. In addition, I had trouble finding what I needed in the documentation for both OpenCV and picamera2 due to inexperience with this and coding in general. I ran into a glitch near the end of completing this milestone where my code would run without errors, but the motors would not turn; this took several days to solve. 
 
@@ -554,7 +555,7 @@ The base of the robot is made up of several components: two DC motors, a plastic
 
 ![Headstone Image](milestone-1-diagram.svg)
 
-**Figure 2: A schematic showing the state of my robot as of the first milestone**
+**Figure 4: A schematic showing the state of my robot as of the first milestone**
 
 Power goes from the battery pack to the H-bridge motor driver (which serves as a terminal to toggle and redirect power) through the "5V" input slot. The motor driver requires at least 5 volts to power its own processor to redirect power. Output slots are used to connect the motors to the H-bridge. The H-bridge also has input pins, which can receive instructions from another device such as a Raspberry Pi to toggle power to certain output slots. The Raspberry Pi has GPIO (general purpose input-output) pins on it, which can receive and output instructions to and from another device. The pins of the two devices are connected via jumper wires, allowing for code on the Raspberry Pi to control the motor driver.
 
@@ -603,32 +604,398 @@ time.sleep(10)
 
 ```
 
-<!--- For your first milestone, describe what your project is and how you plan to build it. You can include:
-- An explanation about the different components of your project and how they will all integrate together
-- Technical progress you've made so far
-- Challenges you're facing and solving in your future milestones
-- What your plan is to complete your project --->
+# Schematics
+![Headstone Image](full_schematic-2.svg)
+
+# Code
+```python
 
 
-<!--- # Schematics --->
-<!--- Here's where you'll put images of your schematics. [Tinkercad](https://www.tinkercad.com/blog/official-guide-to-tinkercad-circuits) and [Fritzing](https://fritzing.org/learning/) are both great resoruces to create professional schematic diagrams, though BSE recommends Tinkercad becuase it can be done easily and for free in the browser. --->
+import cv2
+import numpy as np
+import RPi.GPIO as GPIO
+from picamera2 import Picamera2, Preview, MappedArray
+import time
 
-<!--- # Code --->
-<!--- Here's where you'll put your code. The syntax below places it into a block of code. Follow the guide [here]([url](https://www.markdownguide.org/extended-syntax/)) to learn how to customize it to your project needs. --->
+# set up motors; this needs to be global for move functions to work and so is outside a function
+
+GPIO.setmode(GPIO.BCM) # set the way that the GPIO pins are referred to in the code
+
+motor1B = 23
+motor1E = 24
+ena = 25
+
+motor2B = 26
+motor2E = 16
+enb = 12
+
+GPIO.setup(motor1B, GPIO.OUT)
+GPIO.setup(motor1E, GPIO.OUT)
+GPIO.setup(ena, GPIO.OUT)
+
+GPIO.setup(motor2B, GPIO.OUT)
+GPIO.setup(motor2E, GPIO.OUT)
+GPIO.setup(enb, GPIO.OUT)
+
+pwmA = GPIO.PWM(ena, 100)
+pwmB = GPIO.PWM(enb, 100)
+pwmA.start(60)
+pwmB.start(60)
+
+def setupCam():
+    print ("in setupCam")
+    picam2 = Picamera2() # allows Picamera2 to be referred to as picam2
+
+    def preview(request):
+            with MappedArray(request, "main") as m: # put other code to retrieve 'main'
+                    pass
+
+    picam2.pre_callback = preview             
+
+    time.sleep(1) # wait 1 second
+
+    picam2.start(show_preview=True) # starts the camera along a live preview window
+
+    return picam2
+
+def test(picam2):
+    print ("in test")
+    while True:
+        frame = picam2.capture_array() # captures one image using camera
+        segmentColor(frame)
+
+def segmentColor(frame):    #creates a mask over 'frame' with only the ball's color coming through
+    print ("in segment_colour")
+    rgb =  cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+    
+    mask_1 = cv2.inRange(rgb, np.array([50,40,170]), np.array([100,70,240])) # range of RGB values to appear through the mask
+
+    mask = mask_1 
+    
+    kern_dilate = np.ones((8,8),np.uint8)
+    kern_erode  = np.ones((3,3),np.uint8)
+    
+    frame = cv2.resize(frame, (320, 240))
+    
+    mask = cv2.resize(mask, (320, 240)) # resize to reduce resolution/improve performance
+    mask= cv2.erode(mask,kern_erode)      # erode to approximate color
+    mask=cv2.dilate(mask,kern_dilate)     # dilate to blur
+    
+    (h,w) = mask.shape
+    
+    cv2.imshow('frame',frame)
+    cv2.imshow('mask', mask)              # Shows mask (B&W frame with identified red pixels) 
+    
+    findArea(mask, frame)
+    
+    return mask, frame
+    
+
+def findArea(mask, frame): # find largest red object within the mask
+    print ("in findArea")
+    contours, hierarchy = cv2.findContours(mask, cv2.RETR_CCOMP, cv2.CHAIN_APPROX_SIMPLE)
+    
+    biggestContour = 0.0
+    contour_index = 0
+    
+    for idx, contour in enumerate(contours): # find the biggest contours in the masked
+        area = cv2.contourArea(contour)
+        if area > biggestContour:
+            biggestContour = area
+            contour_index = idx
+
+    location=(0,0,2,2)
+    if len(contours) > 0: # if contours are in the masked view, find their x and y
+        location = cv2.boundingRect(contours[contour_index])
+    
+    lastSeenX = 0
+    lastSeenY = 0
+
+    actOnBall(location, lastSeenX, lastSeenY)
+
+    return None
 
 
-<!--- ```c++
-void setup() {
-  // put your setup code here, to run once:
-  Serial.begin(9600);
-  Serial.println("Hello World!");
-}
+def actOnBall(location, lastSeenX, lastSeenY):
+    print ("in actOnBall")
+    x, y, width, height = location 
+    
+    print("x:"+str(x))
+    print("y:"+str(y))
+    
+    if (width*height) > 300:
+        print ("ball")
+        if x<=160:
+            if 130<x<190:
+                pass
+            else:
+                # turn left until ball centered
+                print ("in turn left")
+                turnLeft()
 
-void loop() {
-  // put your main code here, to run repeatedly:
+        else:
+            # turn right until ball centered
+            if 130<x<190:
+                pass
+            else:
+                print ("in turn right")
+                turnRight()
+        # move forward until contour area greater than a certain amount
+        moveForward()
+        if (width*height)>= 800: # if the size of the ball in the camera feed is big enough, stop
+            pass
+        else:        
+            if lastSeenX<=320:
+                turnLeft()
+            else:
+                turnRight()
+        
+    else:
+        print("no ball")
+        lastSeenX = x
+        lastSeenY = y
+    
+def turnRight(motor1B=23, motor1E=24, motor2B=26, motor2E=16):
+    print ("in turnRight")
+    GPIO.output(motor1B,GPIO.HIGH) 
+    GPIO.output(motor1E, GPIO.LOW) 
 
-}
-``` --->
+    GPIO.output(motor2B, GPIO.LOW) 
+    GPIO.output(motor2E, GPIO.LOW)
+    print("----------------")
+    time.sleep(0.05)
+    
+def turnLeft(motor1B=23, motor1E=24, motor2B=26, motor2E=16):
+    print ("in turnLeft")
+    GPIO.output(motor1B,GPIO.LOW) 
+    GPIO.output(motor1E, GPIO.LOW) 
+
+    GPIO.output(motor2B, GPIO.HIGH) 
+    GPIO.output(motor2E, GPIO.LOW)
+    print("----------------")
+    time.sleep(0.05)
+    
+def moveBackward(motor1B=23, motor1E=24, motor2B=26, motor2E=16):
+    print ("in moveForward")
+    GPIO.output(motor1B,GPIO.HIGH) 
+    GPIO.output(motor1E, GPIO.LOW) 
+
+    GPIO.output(motor2B, GPIO.HIGH) 
+    GPIO.output(motor2E, GPIO.LOW)
+    print("----------------")
+    time.sleep(0.1)
+    
+def moveForward(motor1B=23, motor1E=24, motor2B=26, motor2E=16):
+    print ("in moveBackward")
+    GPIO.output(motor1E,GPIO.HIGH) 
+    GPIO.output(motor1B, GPIO.LOW) 
+
+    GPIO.output(motor2E, GPIO.HIGH) 
+    GPIO.output(motor2B, GPIO.LOW)
+    print("----------------")
+    time.sleep(0.1)
+    
+while True:
+    camready = setupCam()
+    test(camready)
+    
+    if cv2.waitKey(0) import cv2
+import numpy as np
+import RPi.GPIO as GPIO
+from picamera2 import Picamera2, Preview, MappedArray
+import time
+
+# set up motors; this needs to be global for move functions to work and so is outside a function
+
+GPIO.setmode(GPIO.BCM) # set the way that the GPIO pins are referred to in the code
+
+motor1B = 23
+motor1E = 24
+ena = 25
+
+motor2B = 26
+motor2E = 16
+enb = 12
+
+GPIO.setup(motor1B, GPIO.OUT)
+GPIO.setup(motor1E, GPIO.OUT)
+GPIO.setup(ena, GPIO.OUT)
+
+GPIO.setup(motor2B, GPIO.OUT)
+GPIO.setup(motor2E, GPIO.OUT)
+GPIO.setup(enb, GPIO.OUT)
+
+pwmA = GPIO.PWM(ena, 100)
+pwmB = GPIO.PWM(enb, 100)
+pwmA.start(60)
+pwmB.start(60)
+
+#return motor1B, motor1E, motor2B, motor2E, ena, enb
+
+def setupCam():
+    print ("in setupCam")
+    picam2 = Picamera2() # allows Picamera2 to be referred to as picam2
+
+    def preview(request):
+            with MappedArray(request, "main") as m: # put other code to retrieve 'main'
+                    pass
+
+    picam2.pre_callback = preview             
+
+    time.sleep(1) # wait 1 second
+
+    picam2.start(show_preview=True) # starts the camera along a live preview window
+
+    return picam2
+
+def test(picam2):
+    print ("in test")
+    while True:
+        frame = picam2.capture_array() # captures one image using camera
+        segmentColor(frame)
+
+def segmentColor(frame):    #creates a mask over 'frame' with only the ball's color coming through
+    print ("in segment_colour")
+    rgb =  cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+    
+    mask_1 = cv2.inRange(rgb, np.array([50,40,170]), np.array([100,70,240])) # range of RGB values to appear through the mask
+
+    mask = mask_1 
+    
+    kern_dilate = np.ones((8,8),np.uint8)
+    kern_erode  = np.ones((3,3),np.uint8)
+    
+    frame = cv2.resize(frame, (320, 240))
+    
+    mask = cv2.resize(mask, (320, 240)) # resize to reduce resolution/improve performance
+    mask= cv2.erode(mask,kern_erode)      # erode to approximate color
+    mask=cv2.dilate(mask,kern_dilate)     # dilate to blur
+    
+    (h,w) = mask.shape
+    
+    cv2.imshow('frame',frame)
+    cv2.imshow('mask', mask)              # Shows mask (B&W frame with identified red pixels) 
+    
+    findArea(mask, frame)
+    
+    return mask, frame
+    
+
+def findArea(mask, frame): # find largest red object within the mask
+    print ("in findArea")
+    contours, hierarchy = cv2.findContours(mask, cv2.RETR_CCOMP, cv2.CHAIN_APPROX_SIMPLE)
+    
+    biggestContour = 0.0
+    contour_index = 0
+    
+    for idx, contour in enumerate(contours): # find the biggest contours in the masked
+        area = cv2.contourArea(contour)
+        if area > biggestContour:
+            biggestContour = area
+            contour_index = idx
+
+    location=(0,0,2,2)
+    if len(contours) > 0: # if contours are in the masked view, find their x and y
+        location = cv2.boundingRect(contours[contour_index])
+    
+    lastSeenX = 0
+    lastSeenY = 0
+
+    actOnBall(location, lastSeenX, lastSeenY)
+
+    return None
+
+
+def actOnBall(location, lastSeenX, lastSeenY):
+    print ("in actOnBall")
+    x, y, width, height = location 
+    
+    print("x:"+str(x))
+    print("y:"+str(y))
+    
+    if (width*height) > 300:
+        print ("ball")
+        if x<=160:
+            if 130<x<190:
+                pass
+            else:
+                # turn left until ball centered
+                print ("in turn left")
+                turnLeft()
+
+        else:
+            # turn right until ball centered
+            if 130<x<190:
+                pass
+            else:
+                print ("in turn right")
+                turnRight()
+        # move forward until contour area greater than a certain amount
+        moveForward()
+        if (width*height)>= 800: # if the size of the ball in the camera feed is big enough, stop
+            pass
+        else:        
+            if lastSeenX<=320:
+                turnLeft()
+            else:
+                turnRight()
+        
+    else:
+        print("no ball")
+        lastSeenX = x
+        lastSeenY = y
+    
+def turnRight(motor1B=23, motor1E=24, motor2B=26, motor2E=16):
+    print ("in turnRight")
+    GPIO.output(motor1B,GPIO.HIGH) 
+    GPIO.output(motor1E, GPIO.LOW) 
+
+    GPIO.output(motor2B, GPIO.LOW) 
+    GPIO.output(motor2E, GPIO.LOW)
+    print("----------------")
+    time.sleep(0.05)
+    
+def turnLeft(motor1B=23, motor1E=24, motor2B=26, motor2E=16):
+    print ("in turnLeft")
+    GPIO.output(motor1B,GPIO.LOW) 
+    GPIO.output(motor1E, GPIO.LOW) 
+
+    GPIO.output(motor2B, GPIO.HIGH) 
+    GPIO.output(motor2E, GPIO.LOW)
+    print("----------------")
+    time.sleep(0.05)
+    
+def moveBackward(motor1B=23, motor1E=24, motor2B=26, motor2E=16):
+    print ("in moveForward")
+    GPIO.output(motor1B,GPIO.HIGH) 
+    GPIO.output(motor1E, GPIO.LOW) 
+
+    GPIO.output(motor2B, GPIO.HIGH) 
+    GPIO.output(motor2E, GPIO.LOW)
+    print("----------------")
+    time.sleep(0.1)
+    
+def moveForward(motor1B=23, motor1E=24, motor2B=26, motor2E=16):
+    print ("in moveBackward")
+    GPIO.output(motor1E,GPIO.HIGH) 
+    GPIO.output(motor1B, GPIO.LOW) 
+
+    GPIO.output(motor2E, GPIO.HIGH) 
+    GPIO.output(motor2B, GPIO.LOW)
+    print("----------------")
+    time.sleep(0.1)
+    
+while True:
+
+    camready = setupCam()
+    test(camready)
+    
+    if cv2.waitKey(1) & 0xff == ord('q'): # if key q pressed, break loop to close all windows
+        break
+
+cv2.destroyAllWindows()
+
+``` 
 
 # Bill of Materials
 
@@ -643,26 +1010,13 @@ void loop() {
 | AA Batteries | To power the motors | $6.64 | <a href="https://www.amazon.com/AmazonBasics-Performance-Alkaline-Batteries-8-Pack/dp/B00O869KJE/"> Link </a> |
 | INIU Power Bank | To power the Raspberry Pi | $22.99 | <a href="https://www.amazon.com/INIU-High-Speed-Flashlight-Powerbank-Compatible/dp/B07CZDXDG8?th=1"> Link </a> | 
 
-
-# Tutorial: Setting up the Raspberry Pi
-
-This guide will walk through the steps to set up your Raspberry Pi in terms of software, assembling the robot, and coding the robot. 
-
-## 1. Imaging the SD Card
-
-To flash the microSD card, you'll need to insert the card into your computer either via an adapter or directly, depending on the computer. Download the <a href="https://www.canakit.com/raspberry-pi-4-starter-kit.html"> Raspberry Pi Imager </a>. 
-
-Within the imager, select the Raspberry Pi 4 Model B as your computer, the OS as the top selection (most likely 64-bit Debian Bookworm Raspberry Pi OS) and 
-
-
-## 2.
-
 # Resources:
 https://learn.adafruit.com/python-virtual-environment-usage-on-raspberry-pi/basic-venv-usage
+
 https://docs.opencv.org/3.4/d6/d00/tutorial_py_root.html
+
 https://www.engineersgarage.com/opencv4-5-raspberry-pi-image-video-access-recording/
 
-To watch the BSE tutorial on how to create a portfolio, click here. --->
 
 # Starter Project: RGB Sliders
 
