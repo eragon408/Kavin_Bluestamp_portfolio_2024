@@ -17,21 +17,122 @@ My project, the ball tracking robot, uses a combination of a Raspberry Pi, an ul
 
 ![Headstone Image](Kavin.jpg)
   
-<!--- # Final Milestone --->
+# Final Milestone
+
+<iframe width="560" height="315" src="https://www.youtube.com/watch?v=QO7vKPxlNC4&list=PLe-u_DjFx7evDJ6N_vX36J16ru7SvHV5m&index=345" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
 
 
-<!--- **Don't forget to replace the text below with the embedding for your milestone video. Go to Youtube, click Share -> Embed, and copy and paste the code to replace what's below.** --->
+For my third and final milestone, I had to put ultrasonic sensors on my robot to detect obstacles and move around them. I didn't get this milestone done, as I only had three days to do so, but I still managed to finish the wiring and write motor testing code. 
 
-<!--- <iframe width="560" height="315" src="https://www.youtube.com/watch?v=QO7vKPxlNC4&list=PLe-u_DjFx7evDJ6N_vX36J16ru7SvHV5m&index=345" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+The ultrasonic sensors, in order to detect obstacles, output a wave of sound at a frequency inaudible to humans. At the same time, my code gets the current time in seconds. When the sound wave bounces off a surface and is recieved back by the ultrasonic sensor, the sensor will output a signal to the Raspberry Pi, which will record the current time again. The time when the wave was cast is subtracted from the time the wave came back to the sensor, then multiplied by the speed of sound (34300 cm/s) to find the distance from the sensor (which is on the robot) to the obstacle (distance = speed * time.) 
 
+The sensor has 4 pins: 
+1. VCC for power (it takes 5V from the Raspberry Pi), 
+2. trig (meaning trigger -- if this pin receives an input, the sensor will cast a sound wave), 
+3. echo (which will output 5V when the sound wave is received back), 
+4. and gnd (ground, which connects to the Raspberry Pi's ground to make a complete circuit.) 
 
-For my third and final milestone, I had to put ultrasonic sensors on my robot to detect obstacles and move around them. I didn't get this milestone done, as 
+I used a breadboard to organize my wiring. I also needed it because the ultrasonic sensor's echo pin outputs 5 volts, which would fry the Raspberry Pi if outputted directly to it. I had to create voltage dividers on the breadboard to reduce the voltage to 3.3V, which the Raspberry Pi can handle, and then add another wire back to the GPIO pins of the Raspberry Pi. 
+
+I faced a few challenges during this milestone. For one, my ultrasonic sensors would randomly stop and start working without explanation. I also had trouble understanding the concept of voltage dividers. However, I'm still happy I managed to do all of this in three days.
+
+My biggest challenges at BSE were mostly related to my inexperience with both the hardware and software aspects of my project. I barely knew how to code, and I didn't have any experience with designing circuits and wiring, major parts of my first and final milestones. However, with the help of online resources, I was able to push through. Other challenges I faced were ssh and VNC, the two methods I used to remotely access my raspberry pi, constantly breaking. My raspberry pi’s SD card was also corrupted twice, making me have to restart parts of my milestones. Although I wasn’t able to finish my third milestone, and potential modifications, such as image recognition, a package holder, and circle detection for the ball, I am still happy with what I accomplished at Bluestamp.
+
+Bluestamp has given me exposure to practical engineering, and equipped me with many new engineering skills. In the future, I want to explore more robotics and other fields of engineering, such as medical engineering, and utilize any opportunity to do so. Overall, Bluestamp was a great experience, and I took a lot away from it. 
+
+Here's my code to test the ultrasonic sensors:
+
+```python
+import RPi.GPIO as GPIO
+import time
+
+GPIO.setmode(GPIO.BCM)
+
+trigRight = 27
+echoRight = 17
+
+trigFront = 6
+echoFront = 13
+
+trigLeft = 22
+echoLeft = 5
+
+GPIO.setup(trigRight, GPIO.OUT)
+GPIO.setup(echoRight, GPIO.IN)
+
+GPIO.setup(trigLeft, GPIO.OUT)
+GPIO.setup(echoLeft, GPIO.IN)
+
+GPIO.setup(trigFront, GPIO.OUT)
+GPIO.setup(echoFront, GPIO.IN)
+
+try:
+    while True:
+        GPIO.output(trigRight, GPIO.LOW)
+        GPIO.output(trigLeft, GPIO.LOW)
+        GPIO.output(trigFront, GPIO.LOW)
+        
+        time.sleep(2)
+        
+        GPIO.output(trigRight, GPIO.HIGH)
+        GPIO.output(trigLeft, GPIO.HIGH) 
+        GPIO.output(trigFront, GPIO.HIGH)
+        
+        time.sleep(0.00001)
+        
+        GPIO.output(trigRight, GPIO.LOW)
+        GPIO.output(trigLeft, GPIO.LOW)
+        GPIO.output(trigFront, GPIO.LOW)
+
+        pulseOutRight, pulseOutLeft, pulseOutFront = None, None, None
+        pulseInRight, pulseInLeft, pulseInFront = None, None, None
+
+        while GPIO.input(echoRight) == 0:
+            pulseOutRight = time.time()
+        while GPIO.input(echoLeft) == 0:
+            pulseOutLeft = time.time()
+        while GPIO.input(echoFront) == 0:
+            pulseOutFront = time.time()
+
+        while GPIO.input(echoRight) == 1:
+            pulseInRight = time.time()
+        while GPIO.input(echoLeft) == 1:
+            pulseInLeft = time.time()
+        while GPIO.input(echoFront) == 1:
+            pulseInFront = time.time()
+
+        if pulseOutRight is not None and pulseInRight is not None:
+            pulseRight = (pulseInRight - pulseOutRight) / 2
+            distanceRight = 34300 * pulseRight  # speed of sound (cm/s) = 34300
+            distanceRight = round(distanceRight, 2)
+            print("Object is at", distanceRight, "cm from the right ultrasonic sensor")
+
+        if pulseOutLeft is not None and pulseInLeft is not None:
+            pulseLeft = (pulseInLeft - pulseOutLeft) / 2
+            distanceLeft = 34300 * pulseLeft
+            distanceLeft = round(distanceLeft, 2)
+            print("Object is at", distanceLeft, "cm from the left ultrasonic sensor")
+
+        if pulseOutFront is not None and pulseInFront is not None:
+            pulseFront = (pulseInFront - pulseOutFront) / 2
+            distanceFront = 34300 * pulseFront
+            distanceFront = round(distanceFront, 2)
+            print("Object is at", distanceFront, "cm from the front ultrasonic sensor")
+
+except KeyboardInterrupt:
+    print("Stopped")
+
+finally:
+    GPIO.cleanup()
+```
 
 <!--- For your final milestone, explain the outcome of your project. Key details to include are:
 - What you've accomplished since your previous milestone
 - What your biggest challenges and triumphs were at BSE
 - A summary of key topics you learned about
 - What you hope to learn in the future after everything you've learned at BSE --->
+
+
 
 # Second Milestone
 
