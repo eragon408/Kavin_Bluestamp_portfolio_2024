@@ -92,8 +92,6 @@ pwmB = GPIO.PWM(enb, 100)
 pwmA.start(60)
 pwmB.start(60)
 
-#return motor1B, motor1E, motor2B, motor2E, ena, enb
-
 def setupCam():
     print ("in setupCam")
     picam2 = Picamera2() # allows Picamera2 to be referred to as picam2
@@ -548,7 +546,7 @@ Don't forget to place the link of where to buy each component inside the quotati
 |:--:|:--:|:--:|:--:|
 | Canakit Raspberry Pi 4 4GB Starter Kit - 32GB | What the item is used for | $119.95 | <a href="https://www.canakit.com/raspberry-pi-4-starter-kit.html"> Link </a> |
 | L298N H-Bridge Arduino Motor Driver | What the item is used for | $6.99 | <a href="https://www.amazon.com/Qunqi-Controller-Module-Stepper-Arduino/dp/B014KMHSW6/"> Link </a> |
-| Item Name | What the item is used for | $Price | <a href="https://www.amazon.com/Arduino-A000066-ARDUINO-UNO-R3/dp/B008GRTSV6/"> Link </a> |
+| Arducam 5MP OV5647 Camera | What the item is used for | $8.99 | <a href="https://www.uctronics.com/arducam-for-raspberry-pi-camera-module-with-case-5mp-1080p-for-raspberry-pi-3-3-b-and-more.html"> Link </a> |
 
 <!--- # Other Resources/Examples --->
 <!--- One of the best parts about Github is that you can view how other people set up their own work. Here are some past BSE portfolios that are awesome examples. You can view how they set up their portfolio, and you can view their index.md files to understand how they implemented different portfolio components.
