@@ -26,6 +26,8 @@ The sensor has 4 pins:
 
 I used a breadboard to organize my wiring. I also needed it because the ultrasonic sensor's echo pin outputs 5 volts, which would fry the Raspberry Pi if outputted directly to it. I had to create voltage dividers on the breadboard to reduce the voltage to 3.3V, which the Raspberry Pi can handle, and then add another wire back to the GPIO pins of the Raspberry Pi. 
 
+
+
 I faced a few challenges during this milestone. For one, my ultrasonic sensors would randomly stop and start working without explanation. I also had trouble understanding the concept of voltage dividers. However, I'm still happy I managed to do all of this in three days.
 
 My biggest challenges at BSE were mostly related to my inexperience with both the hardware and software aspects of my project. I barely knew how to code, and I didn't have any experience with designing circuits and wiring, major parts of my first and final milestones. However, with the help of online resources, I was able to push through. Other challenges I faced were ssh and VNC, the two methods I used to remotely access my raspberry pi, constantly breaking. My raspberry pi’s SD card was also corrupted twice, making me have to restart parts of my milestones. Although I wasn’t able to finish my third milestone, and potential modifications, such as image recognition, a package holder, and circle detection for the ball, I am still happy with what I accomplished at Bluestamp.
