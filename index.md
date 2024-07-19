@@ -1028,7 +1028,7 @@ Current flows from the micro-USB port to the sliders, which control the flow of 
 
 ![Headstone Image](Starter-project-diagram-4.png)
 
-**Figure 3: A diagram showing the internal circuits of the RGB Sliders**
+**Figure 5: A diagram showing the internal circuits of the RGB Sliders**
 
 I found this project mostly easy to put together, as I just had to solder the sliders and LED to the board. However, I encountered a problem with the green color slider where it did not work. At first, I thought this was a problem with the slider not being soldered properly to the board, and added more solder to the pins. Later, though, I realized that the LED was positioned incorrectly. I attempted to desolder it, but was mostly unsuccessful, so instead kept melting the solder and slightly adjusting the angle of the LED until it worked.
 
