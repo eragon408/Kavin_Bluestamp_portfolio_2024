@@ -8,7 +8,7 @@ My project, the ball tracking robot, uses a combination of a Raspberry Pi, an ul
 | Kavin V | Stratford Preparatory | Electrical Engineering | Incoming Freshman
 
 
-![Headstone Image](Kavin.jpg)
+![Headstone Image](Kavin1.png)
   
 # Final Milestone
 
