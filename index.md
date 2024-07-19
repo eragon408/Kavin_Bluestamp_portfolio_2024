@@ -14,7 +14,7 @@ My project, the ball tracking robot, uses a combination of a Raspberry Pi, an ul
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/QO7vKPxlNC4?si=Abst_qLvoBDKtjux" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
-For my third and final milestone, I had to put ultrasonic sensors on my robot to detect obstacles and move around them. I didn't get this milestone done, as I only had three days to do so, but I still managed to finish the wiring and write sensor testing code. 
+For my third and final milestone, I had to put ultrasonic sensors on my robot to detect obstacles and move around them. Future work would incorporate this into my whole robot, This milestone is only the wiring and write sensor testing code. 
 
 The ultrasonic sensors, in order to detect obstacles, output a wave of sound at a frequency inaudible to humans. At the same time, my code gets the current time in seconds. When the sound wave bounces off a surface and is recieved back by the ultrasonic sensor, the sensor will output a signal to the Raspberry Pi, which will record the current time again. The time when the wave was cast is subtracted from the time the wave came back to the sensor, then multiplied by the speed of sound (34300 cm/s) to find the distance from the sensor (which is on the robot) to the obstacle (distance = speed * time.) 
 
