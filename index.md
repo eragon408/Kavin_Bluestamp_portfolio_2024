@@ -19,9 +19,13 @@ My project, the ball tracking robot, uses a combination of a Raspberry Pi, an ul
   
 <!--- # Final Milestone --->
 
+
 <!--- **Don't forget to replace the text below with the embedding for your milestone video. Go to Youtube, click Share -> Embed, and copy and paste the code to replace what's below.** --->
 
-<!--- <iframe width="560" height="315" src="https://www.youtube.com/embed/F7M7imOVGug" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe> --->
+<!--- <iframe width="560" height="315" src="https://www.youtube.com/watch?v=QO7vKPxlNC4&list=PLe-u_DjFx7evDJ6N_vX36J16ru7SvHV5m&index=345" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+
+
+For my third and final milestone, I had to put ultrasonic sensors on my robot to detect obstacles and move around them. I didn't get this milestone done, as 
 
 <!--- For your final milestone, explain the outcome of your project. Key details to include are:
 - What you've accomplished since your previous milestone
@@ -31,7 +35,7 @@ My project, the ball tracking robot, uses a combination of a Raspberry Pi, an ul
 
 # Second Milestone
 
-<!--- <iframe width="560" height="315" src="https://www.youtube.com/embed/y3VAmNlER5Y" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe> --->
+<iframe width="560" height="315" src="https://www.youtube.com/embed/DaMwDQAP_oo?si=SPBSliBHyFMb3oEt" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 For my second milestone, I had to attach a camera to my raspberry pi and use it to set up a ball tracking algorithm. This required: 
 1. Mounting the camera on the robot, 
 2. Connecting it to the raspberry pi, 
@@ -544,9 +548,15 @@ Don't forget to place the link of where to buy each component inside the quotati
 
 | **Part** | **Note** | **Price** | **Link** |
 |:--:|:--:|:--:|:--:|
-| Canakit Raspberry Pi 4 4GB Starter Kit - 32GB | What the item is used for | $119.95 | <a href="https://www.canakit.com/raspberry-pi-4-starter-kit.html"> Link </a> |
-| L298N H-Bridge Arduino Motor Driver | What the item is used for | $6.99 | <a href="https://www.amazon.com/Qunqi-Controller-Module-Stepper-Arduino/dp/B014KMHSW6/"> Link </a> |
-| Arducam 5MP OV5647 Camera | What the item is used for | $8.99 | <a href="https://www.uctronics.com/arducam-for-raspberry-pi-camera-module-with-case-5mp-1080p-for-raspberry-pi-3-3-b-and-more.html"> Link </a> |
+| Canakit Raspberry Pi 4 4GB Starter Kit - 32GB | Used to control and deploy code on the robot | $119.95 | <a href="https://www.canakit.com/raspberry-pi-4-starter-kit.html"> Link </a> |
+| L298N H-Bridge Motor Driver | Used to output PWM signals from Raspberry Pi to motors | $6.99 | <a href="https://www.amazon.com/Qunqi-Controller-Module-Stepper-Arduino/dp/B014KMHSW6/"> Link </a> |
+| Arducam 5MP OV5647 Camera | Used for detection of the ball by color | $8.99 | <a href="https://www.uctronics.com/arducam-for-raspberry-pi-camera-module-with-case-5mp-1080p-for-raspberry-pi-3-3-b-and-more.html"> Link </a> |
+| HC-SR04 Ultrasonic Sensor (3) | Used for obstacle detection | $13.50 | <a href="https://www.sparkfun.com/products/15569"> Link </a> |
+| Emozny 2-Wheel Robot Car Kit | Is the base of the robot and includes the motors and wheels for movement | $12.99 | <a href="https://www.amazon.com/Smart-Chassis-Motors-Encoder-Battery/dp/B01LXY7CM3"> Link </a> |
+| Breadboard | To organize wiring and create voltage dividers | $5.00 | <a href="https://www.adafruit.com/product/4539"> Link </a> |
+| AA Batteries | To power the motors | $6.64 | <a href="https://www.amazon.com/AmazonBasics-Performance-Alkaline-Batteries-8-Pack/dp/B00O869KJE/"> Link </a> |
+| INIU Power Bank | To power the Raspberry Pi | $22.99 | <a href="https://www.amazon.com/INIU-High-Speed-Flashlight-Powerbank-Compatible/dp/B07CZDXDG8?th=1"> Link </a> |
+
 
 <!--- # Other Resources/Examples --->
 <!--- One of the best parts about Github is that you can view how other people set up their own work. Here are some past BSE portfolios that are awesome examples. You can view how they set up their portfolio, and you can view their index.md files to understand how they implemented different portfolio components.
